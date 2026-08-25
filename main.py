@@ -14,21 +14,26 @@ while True:
 
     
 
-    while True:
 
-        menu_input = menu_choice()
 
-        match menu_input:
-            case 1:
-                pass
-            case 2:
+    menu_input = menu_choice(6)
+
+    match menu_input:
+        case 1:
+            pass
+        case 2:
+
+            while True:
+                clear_terminal()
                 print("Vad vill du filtrera efter?\n")
 
-                print("")
-                print("")
-                print("")
-                print("")
-                print("")
+                menu_input = menu_choice(5)
+
+                print("1. Namn")
+                print("2. Datum")
+                print("3. Värde")
+                print("4. Värde 2")
+                print("5. Tillbaka")
 
                 match menu_input:
                     case 1:
@@ -39,14 +44,17 @@ while True:
                         pass
                     case 4:
                         pass
+                    case 5:
+                        clear_terminal()
+                        break
 
-            case 3:
-                pass
-            case 4:
-                pass
-            case 5:
-                pass
-            case 6:
-                break
+        case 3:
+            pass
+        case 4:
+            pass
+        case 5:
+            pass
+        case 6:
+            break
 
 
