@@ -1,0 +1,13 @@
+
+
+class SensorData():
+    def __init__(self, device_id, timestamp, value, status):
+        self.self = self
+        self.device_id = device_id
+        self.timestamp = timestamp
+        self.value = value
+        self.status = status
+
+
+
+

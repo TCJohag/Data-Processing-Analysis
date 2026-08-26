@@ -49,6 +49,7 @@ while True:
                         break
 
         case 3:
+            #List comprehension, (data.id for id in dataframe if search_input == data.id) t.ex.
             pass
         case 4:
             pass
