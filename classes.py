@@ -8,6 +8,7 @@ class SensorData():
         self.value = value
         self.status = status
 
-
+    def __str__(self):
+        return f"{self.device_id, self.timestamp, self.value, self.status}"
 
 
