@@ -1,14 +1,13 @@
 from datetime import timedelta
 from datetime import datetime
 from time import sleep
-from time import gmtime
-from time import strftime
 from collections.abc import Iterator
 import os
 from classes import SensorData
 import random
 import string
 import time
+from functools import wraps
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -16,6 +15,21 @@ def clear_terminal() -> None:
     elif os.name == 'posix':
         os.system('clear')
 
+
+def execution_time(func):
+    @wraps(func)
+    def execution_time_wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+
+        if isinstance(result, Iterator):
+            result = list(result)
+
+        end_time = time.perf_counter()
+        total_time = end_time - start_time
+        print(f"{func.__name__}{args} {kwargs} tog {total_time:.4f} sekunder!")
+        return result
+    return execution_time_wrapper
 
 def menu_choice(max_choice):
     while True:
@@ -30,8 +44,10 @@ def menu_choice(max_choice):
             clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
+
+@execution_time
 def generate_data() -> Iterator[SensorData]:
-    for x in range (0,1000000):
+    for x in range(1_000_000):
         device_id = ""
 
         for letters in range(3):
@@ -59,12 +75,14 @@ def generate_data() -> Iterator[SensorData]:
         status = random.choice(["OK", "ERROR", "WARNING"])
 
 
-        sleep(3)
         yield SensorData(device_id, timestamp, value, status)
 
 
-generate_data()
+data = generate_data()
 
-for x in generate_data():
-    print(f"{x}")
+
+
+
+
+    
 
