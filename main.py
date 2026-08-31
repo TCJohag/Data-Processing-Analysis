@@ -1,4 +1,4 @@
-from functions import menu_choice, clear_terminal
+from functions import menu_choice, clear_terminal, generate_data
 
 
 while True:
@@ -20,7 +20,8 @@ while True:
 
     match menu_input:
         case 1:
-            pass
+            generate_data()
+            print("Generering klar!")
         case 2:
 
             while True:
