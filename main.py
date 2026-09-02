@@ -1,4 +1,4 @@
-from functions import menu_choice, clear_terminal, generate_data
+from functions import menu_choice, clear_terminal, generate_data, pause
 
 
 while True:
@@ -20,21 +20,21 @@ while True:
 
     match menu_input:
         case 1:
+            #Kolla ifall generate_data har körts tidigare, om så varna användaren
             generate_data()
             print("Generering klar!")
+            pause()
         case 2:
 
             while True:
                 clear_terminal()
                 print("Vad vill du filtrera efter?\n")
 
-                menu_input = menu_choice(5)
+                menu_input = menu_choice(3)
 
-                print("1. Namn")
-                print("2. Datum")
-                print("3. Värde")
-                print("4. Värde 2")
-                print("5. Tillbaka")
+                print("1. Value")
+                print("2. Status")
+                print("3. Tillbaka")
 
                 match menu_input:
                     case 1:
@@ -50,11 +50,14 @@ while True:
                         break
 
         case 3:
-            #List comprehension, (data.id for id in dataframe if search_input == data.id) t.ex.
+            #Binärsökning, listan måste vara sorterad
+            #Användaren matar in ett device_id, eller tre fasta värdenn: första i listan, i mitten och ett som inte finns
             pass
         case 4:
+            #Sortera hela datan baserat på device_ideller value. Quicksort
             pass
         case 5:
+            #Skriver ut en sammanställning av de senast uppmätta tiderna för generering, filtrering, sortering, sökning
             pass
         case 6:
             break

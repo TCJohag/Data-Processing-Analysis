@@ -1,6 +1,5 @@
 from datetime import timedelta
 from datetime import datetime
-from time import sleep
 from collections.abc import Iterator
 import os
 from classes import SensorData
@@ -15,11 +14,15 @@ def clear_terminal() -> None:
     elif os.name == 'posix':
         os.system('clear')
 
+def pause() -> None:
+    print("Tryck valfri tangent och enter för att fortsätta...")
+    input()
 
 def execution_time(func):
     @wraps(func)
-    def execution_time_wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
+
         result = func(*args, **kwargs)
 
         if isinstance(result, Iterator):
@@ -27,9 +30,18 @@ def execution_time(func):
 
         end_time = time.perf_counter()
         total_time = end_time - start_time
-        print(f"{func.__name__}{args} {kwargs} tog {total_time:.4f} sekunder!")
+        print(f"{func.__name__} tog {total_time:.4f} sekunder!")
         return result
-    return execution_time_wrapper
+    return wrapper
+
+
+def has_it_been_called(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        wrapper.has_been_called = True
+        return func(*args, **kwargs)
+    wrapper.has_been_called = False
+    return wrapper
 
 def menu_choice(max_choice):
     while True:
@@ -44,7 +56,7 @@ def menu_choice(max_choice):
             clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
-
+@has_it_been_called
 @execution_time
 def generate_data() -> Iterator[SensorData]:
     for x in range(1_000_000):
@@ -76,10 +88,6 @@ def generate_data() -> Iterator[SensorData]:
 
 
         yield SensorData(device_id, timestamp, value, status)
-
-
-data = generate_data()
-
 
 
 
