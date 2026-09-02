@@ -21,9 +21,26 @@ while True:
     match menu_input:
         case 1:
             #Kolla ifall generate_data har körts tidigare, om så varna användaren
-            generate_data()
-            print("Generering klar!")
-            pause()
+
+            if generate_data.has_been_called == True:
+                print("Data har redan genererats. Vill du göra det igen?")
+
+                print("1. Ja")
+                print("2. Nej, ta mig tillbaka.")
+
+                menu_input = menu_choice(2)
+
+                match menu_input:
+                    case 1:
+                        generate_data()
+                        print("Generering klar!")
+                        pause()
+                    case 2:
+                        break
+            else:
+                generate_data()
+                print("Generering klar!")
+                pause()
         case 2:
 
             while True:

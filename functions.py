@@ -7,6 +7,8 @@ import random
 import string
 import time
 from functools import wraps
+from enimation import loading
+from enimation.motions import rotating_spinner
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -56,6 +58,8 @@ def menu_choice(max_choice):
             clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
+#Fix spinner
+@loading(rotating_spinner)
 @has_it_been_called
 @execution_time
 def generate_data() -> Iterator[SensorData]:
