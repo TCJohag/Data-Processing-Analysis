@@ -105,13 +105,19 @@ def sort_generated_data(SensorData) -> list:
 def sorted_list(SensorData) -> list:
     pass
 
-def name_sort() -> list:
-    pass
+def id_sort(data: list) -> list:
+    device_id_list = [device_id for device_id in data if data.device_id in device_id]
+    for device_ids in device_id_list:
+        print(device_ids)
 
-def value_sort(value_input) -> list:
-    value_list = [value for value in SensorData.list if SensorData.value >= value_input in value]
+def value_sort(data: list, value_input: float) -> list:
+    value_list = [value for value in data if data.value >= value_input in value]
     for values in value_list:
         print(values)
+
+def status_sort(data: list, status_input: string) -> list:
+    pass
+
 
 
 

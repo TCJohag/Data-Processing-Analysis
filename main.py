@@ -1,5 +1,5 @@
 from classes import SensorData
-from functions import menu_choice, clear_terminal, generate_data, pause
+from functions import menu_choice, clear_terminal, generate_data, pause, value_sort
 
 
 while True:
@@ -33,7 +33,7 @@ while True:
 
                 match menu_input:
                     case 1:
-                        generate_data()
+                        data = generate_data()
                         print("Generering klar!")
                         pause()
                     case 2:
@@ -57,13 +57,15 @@ while True:
                 match menu_input:
                     case 1:
                         print("Skriv ett värde mellan 0.0 - 100.0\n")
-                        value_input = print("..")
+                        value_input = float(input(".."))
 
-                        value_list = [value for value in SensorData.list if SensorData.value >= value_input in value]
-                        for values in value_list:
-                            print(values)
+                        values = value_sort(data, value_input)
+
+                        for object in values:
+                            print(object)
+
                     case 2:
-                        pass
+                        print("")
                     case 3:
                         clear_terminal()
                         break
