@@ -8,7 +8,7 @@ import string
 import time
 from functools import wraps
 from enimation import loading
-from enimation.motions import rotating_spinner
+from enimation.motions import loading_bar_with_percentage
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -58,8 +58,10 @@ def menu_choice(max_choice):
             clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
-#Fix spinner
-@loading(rotating_spinner)
+
+
+# Fixa så att loading baren sker med execution time
+@loading(loading_bar_with_percentage)
 @has_it_been_called
 @execution_time
 def generate_data() -> Iterator[SensorData]:
@@ -97,4 +99,20 @@ def generate_data() -> Iterator[SensorData]:
 
 
     
+def sort_generated_data(SensorData) -> list:
+    sort_list = list.sort
+
+def sorted_list(SensorData) -> list:
+    pass
+
+def name_sort() -> list:
+    pass
+
+def value_sort(value_input) -> list:
+    value_list = [value for value in SensorData.list if SensorData.value >= value_input in value]
+    for values in value_list:
+        print(values)
+
+
+
 

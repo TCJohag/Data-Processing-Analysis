@@ -1,3 +1,4 @@
+from classes import SensorData
 from functions import menu_choice, clear_terminal, generate_data, pause
 
 
@@ -55,23 +56,24 @@ while True:
 
                 match menu_input:
                     case 1:
-                        pass
+                        print("Skriv ett värde mellan 0.0 - 100.0\n")
+                        value_input = print("..")
+
+                        value_list = [value for value in SensorData.list if SensorData.value >= value_input in value]
+                        for values in value_list:
+                            print(values)
                     case 2:
                         pass
                     case 3:
-                        pass
-                    case 4:
-                        pass
-                    case 5:
                         clear_terminal()
                         break
 
         case 3:
             #Binärsökning, listan måste vara sorterad
-            #Användaren matar in ett device_id, eller tre fasta värdenn: första i listan, i mitten och ett som inte finns
+            #Användaren matar in ett device_id, eller tre fasta värden: första i listan, i mitten och ett som inte finns
             pass
         case 4:
-            #Sortera hela datan baserat på device_ideller value. Quicksort
+            #Sortera hela datan baserat på device_id eller value. Quicksort
             pass
         case 5:
             #Skriver ut en sammanställning av de senast uppmätta tiderna för generering, filtrering, sortering, sökning
