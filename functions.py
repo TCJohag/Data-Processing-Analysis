@@ -1,3 +1,5 @@
+from enimation import CustomLoading
+from enimation.motions import rotating_spinner
 from datetime import timedelta
 from datetime import datetime
 from collections.abc import Iterator
@@ -7,8 +9,8 @@ import random
 import string
 import time
 from functools import wraps
-from enimation import loading
-from enimation.motions import loading_bar_with_percentage
+from enimation.loading import CustomLoading
+from enimation.motions import loading_bar_with_percentage, rotating_spinner
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -19,6 +21,12 @@ def clear_terminal() -> None:
 def pause() -> None:
     print("Tryck valfri tangent och enter för att fortsätta...")
     input()
+
+
+loader = CustomLoading(custom='rotating_spinner')
+
+
+
 
 def execution_time(func):
     @wraps(func)
@@ -31,8 +39,8 @@ def execution_time(func):
             result = list(result)
 
         end_time = time.perf_counter()
-        total_time = end_time - start_time
-        print(f"{func.__name__} tog {total_time:.4f} sekunder!")
+        execution_time = end_time - start_time
+        print(f"{func.__name__} tog {execution_time:.4f} sekunder!")
         return result
     return wrapper
 
@@ -41,6 +49,7 @@ def has_it_been_called(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         wrapper.has_been_called = True
+        clear_terminal()
         return func(*args, **kwargs)
     wrapper.has_been_called = False
     return wrapper
@@ -61,11 +70,11 @@ def menu_choice(max_choice):
 
 
 # Fixa så att loading baren sker med execution time
-@loading(loading_bar_with_percentage)
 @has_it_been_called
 @execution_time
 def generate_data() -> Iterator[SensorData]:
     for x in range(1_000_000):
+
         device_id = ""
 
         for letters in range(3):
@@ -110,10 +119,16 @@ def id_sort(data: list) -> list:
     for device_ids in device_id_list:
         print(device_ids)
 
+
+
 def value_sort(data: list, value_input: float) -> list:
-    value_list = [value for value in data if data.value >= value_input in value]
-    for values in value_list:
-        print(values)
+
+        value_list = [item for item in data if item.value >= value_input]
+        for item in value_list:
+            print(item)
+        print(f"Hittade {len(value_list)} resultat!\n")
+        return value_list
+
 
 def status_sort(data: list, status_input: string) -> list:
     pass

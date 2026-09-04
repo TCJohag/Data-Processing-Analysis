@@ -39,7 +39,7 @@ while True:
                     case 2:
                         break
             else:
-                generate_data()
+                data = generate_data()
                 print("Generering klar!")
                 pause()
         case 2:
@@ -47,22 +47,27 @@ while True:
             while True:
                 clear_terminal()
                 print("Vad vill du filtrera efter?\n")
-
-                menu_input = menu_choice(3)
-
                 print("1. Value")
                 print("2. Status")
                 print("3. Tillbaka")
 
+
+                menu_input = menu_choice(3)
+
+                
+
                 match menu_input:
                     case 1:
                         print("Skriv ett värde mellan 0.0 - 100.0\n")
-                        value_input = float(input(".."))
+                        value_input = float(input(".. "))
 
-                        values = value_sort(data, value_input)
-
-                        for object in values:
-                            print(object)
+                        try:
+                            value_sort(data, value_input)
+                            pause()
+                        except NameError as e:
+                            clear_terminal()
+                            print("Har du genererat data än? Hittar inte någon!\n")
+                            pause()
 
                     case 2:
                         print("")
