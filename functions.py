@@ -1,5 +1,3 @@
-from enimation import CustomLoading
-from enimation.motions import rotating_spinner
 from datetime import timedelta
 from datetime import datetime
 from collections.abc import Iterator
@@ -9,8 +7,6 @@ import random
 import string
 import time
 from functools import wraps
-from enimation.loading import CustomLoading
-from enimation.motions import loading_bar_with_percentage, rotating_spinner
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -21,10 +17,6 @@ def clear_terminal() -> None:
 def pause() -> None:
     print("Tryck valfri tangent och enter för att fortsätta...")
     input()
-
-
-loader = CustomLoading(custom='rotating_spinner')
-
 
 
 
@@ -86,13 +78,9 @@ def generate_data() -> Iterator[SensorData]:
             device_id += random.choice(string.digits)
 
 
-        # Timestamp
-
         days_back = random.randint(0, 700)
         seconds = random.randint(0, 86399)
         random_dt = datetime.now() - timedelta(days=days_back, seconds=seconds)
-
-
         timestamp = random_dt.strftime("%a, %d %b %Y %H:%M:%S")
 
 
@@ -108,8 +96,8 @@ def generate_data() -> Iterator[SensorData]:
 
 
     
-def sort_generated_data(SensorData) -> list:
-    sort_list = list.sort
+# def sort_generated_data(data: list) -> list:
+#     data.sort()
 
 def sorted_list(SensorData) -> list:
     pass
@@ -129,8 +117,10 @@ def value_sort(data: list, value_input: float) -> list:
         print(f"Hittade {len(value_list)} resultat!\n")
         return value_list
 
+def binary_search(data: list, id_input: string) -> list:
+    pass
 
-def status_sort(data: list, status_input: string) -> list:
+def device_id_search(data: list, id_input: string) -> list:
     pass
 
 

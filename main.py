@@ -1,5 +1,5 @@
 from classes import SensorData
-from functions import menu_choice, clear_terminal, generate_data, pause, value_sort
+from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search
 
 
 while True:
@@ -59,10 +59,13 @@ while True:
                 match menu_input:
                     case 1:
                         print("Skriv ett värde mellan 0.0 - 100.0\n")
-                        value_input = float(input(".. "))
-
                         try:
+                            value_input = float(input(".. "))
                             value_sort(data, value_input)
+                            pause()
+                        except ValueError as e:
+                            clear_terminal()
+                            print("Du måste skriva ett tal med siffror!\n")
                             pause()
                         except NameError as e:
                             clear_terminal()
@@ -78,6 +81,18 @@ while True:
         case 3:
             #Binärsökning, listan måste vara sorterad
             #Användaren matar in ett device_id, eller tre fasta värden: första i listan, i mitten och ett som inte finns
+            print("Skriv ett device id!\n")
+
+            try: 
+                data.sort()
+                id_input = input(".. ")
+                binary_search(data, id_input)
+            except NameError as e:
+                clear_terminal()
+                print("Har du genererat data än? Hittar inte någon!\n")
+                pause()
+            
+
             pass
         case 4:
             #Sortera hela datan baserat på device_id eller value. Quicksort
