@@ -12,3 +12,7 @@ class SensorData():
         return f"{self.device_id, self.timestamp, self.value, self.status}"
 
 
+class NoDataError(Exception):
+    pass
+
+

@@ -2,7 +2,7 @@ from datetime import timedelta
 from datetime import datetime
 from collections.abc import Iterator
 import os
-from classes import SensorData
+from classes import SensorData, NoDataError
 import random
 import string
 import time
@@ -18,6 +18,19 @@ def pause() -> None:
     print("Tryck valfri tangent och enter för att fortsätta...")
     input()
 
+
+def exception_handler(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError as e:
+            clear_terminal()
+            print(f"Det blev visst fel med {func.__name__}. Angav du ett värde likt det som instruerats?")
+        except NoDataError:
+            clear_terminal()
+            print("Det verkar som att det inte finns någon data. Har du genererat någon?")     
+    return wrapper
 
 
 def execution_time(func):
@@ -68,12 +81,10 @@ def generate_data() -> Iterator[SensorData]:
     for x in range(1_000_000):
 
         device_id = ""
-
         for letters in range(3):
             device_id += random.choice(string.ascii_uppercase)
 
         device_id += "-"
-
         for digits in range(4):
             device_id += random.choice(string.digits)
 
@@ -83,14 +94,16 @@ def generate_data() -> Iterator[SensorData]:
         random_dt = datetime.now() - timedelta(days=days_back, seconds=seconds)
         timestamp = random_dt.strftime("%a, %d %b %Y %H:%M:%S")
 
-
-
         value = round(random.uniform(0.0, 100.0), 1)
 
         status = random.choice(["OK", "ERROR", "WARNING"])
 
-
         yield SensorData(device_id, timestamp, value, status)
+
+
+def generated_data_check():
+    pass
+
 
 
     
@@ -104,17 +117,25 @@ def id_sort(data: list) -> list:
         print(device_ids)
 
 
-def value_sort(data: list, value_input: float) -> list:
-        value_list = [item for item in data if item.value >= value_input]
-        for item in value_list:
-            print(item)
-        print(f"Hittade {len(value_list)} resultat!\n")
-        return value_list
+@exception_handler
+def value_sort(data: list, value_input: str) -> list:
+    if data is None:
+        raise NoDataError
+
+    value_input = float(value_input)
+    value_list = [item for item in data if item.value >= value_input]
+    for item in value_list:
+        print(item)
+    print(f"Hittade {len(value_list)} resultat!\n")
+    return value_list
 
 
-def status_sort(data: list, status_input: string) -> list:
+@exception_handler
+def status_sort(data: list, status_input: str) -> list:
+    if data is None:
+        raise NoDataError
+
     ALLOWED = {"OK", "WARNING", "ERROR"}
-
     if status_input not in ALLOWED:
         raise ValueError
     else:

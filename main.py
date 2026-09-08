@@ -1,6 +1,7 @@
 from classes import SensorData
 from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search, status_sort
 
+data = None
 
 while True:
 
@@ -24,6 +25,7 @@ while True:
             #Kolla ifall generate_data har körts tidigare, om så varna användaren
 
             if generate_data.has_been_called == True:
+                clear_terminal()
                 print("Data har redan genererats. Vill du göra det igen?")
 
                 print("1. Ja")
@@ -37,7 +39,9 @@ while True:
                         print("Generering klar!")
                         pause()
                     case 2:
-                        break
+                        clear_terminal()
+                        continue
+                        
             else:
                 data = generate_data()
                 print("Generering klar!")
@@ -59,33 +63,17 @@ while True:
                 match menu_input:
                     case 1:
                         print("Skriv ett värde mellan 0.0 - 100.0\n")
-                        try:
-                            value_input = float(input(".. "))
-                            value_sort(data, value_input)
-                            pause()
-                        except ValueError as e:
-                            clear_terminal()
-                            print("Du måste skriva ett tal med siffror!\n")
-                            pause()
-                        except NameError as e:              # Måste göras till funktion
-                            clear_terminal()
-                            print("Har du genererat data än? Hittar inte någon!\n")
-                            pause()
+                        value_input = (input(".. "))
+                        value_sort(data, value_input)
+                        pause()
 
                     case 2:
                         print("Skriv vilken status du vill söka efter: OK, ERROR eller WARNING\n")
-                        try:
-                            status_input = input(".. ").upper()
-                            status_sort(data, status_input)
-                            pause()
-                        except ValueError as e:
-                            clear_terminal()
-                            print("Det verkar som att du inte har skrivit något av alternativen, försök igen!\n")
-                            pause()
-                        except NameError as e:          # Måste göras till funktion
-                            clear_terminal()
-                            print("Har du genererat data än? Hittar inte någon!\n")
-                            pause()
+
+                        status_input = input(".. ").upper()
+                        status_sort(data, status_input)
+                        pause()
+
                     case 3:
                         clear_terminal()
                         break
