@@ -1,5 +1,5 @@
 from classes import SensorData
-from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search
+from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search, status_sort
 
 
 while True:
@@ -67,13 +67,25 @@ while True:
                             clear_terminal()
                             print("Du måste skriva ett tal med siffror!\n")
                             pause()
-                        except NameError as e:
+                        except NameError as e:              # Måste göras till funktion
                             clear_terminal()
                             print("Har du genererat data än? Hittar inte någon!\n")
                             pause()
 
                     case 2:
-                        print("")
+                        print("Skriv vilken status du vill söka efter: OK, ERROR eller WARNING\n")
+                        try:
+                            status_input = input(".. ").upper()
+                            status_sort(data, status_input)
+                            pause()
+                        except ValueError as e:
+                            clear_terminal()
+                            print("Det verkar som att du inte har skrivit något av alternativen, försök igen!\n")
+                            pause()
+                        except NameError as e:          # Måste göras till funktion
+                            clear_terminal()
+                            print("Har du genererat data än? Hittar inte någon!\n")
+                            pause()
                     case 3:
                         clear_terminal()
                         break
@@ -87,7 +99,7 @@ while True:
                 data.sort()
                 id_input = input(".. ")
                 binary_search(data, id_input)
-            except NameError as e:
+            except NameError as e:              # Måste göras till funktion
                 clear_terminal()
                 print("Har du genererat data än? Hittar inte någon!\n")
                 pause()

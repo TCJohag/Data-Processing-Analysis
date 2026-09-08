@@ -54,7 +54,7 @@ def menu_choice(max_choice):
                 return menu_input
             else:
                 clear_terminal()
-                print("Du får endast välja ett alternativ mellan 1 och 6!\n")
+                print(f"Du får endast välja ett alternativ mellan 1 och {max_choice}!\n")
         except ValueError as e:
             clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
@@ -93,14 +93,10 @@ def generate_data() -> Iterator[SensorData]:
         yield SensorData(device_id, timestamp, value, status)
 
 
-
-
     
 # def sort_generated_data(data: list) -> list:
 #     data.sort()
 
-def sorted_list(SensorData) -> list:
-    pass
 
 def id_sort(data: list) -> list:
     device_id_list = [device_id for device_id in data if data.device_id in device_id]
@@ -108,14 +104,27 @@ def id_sort(data: list) -> list:
         print(device_ids)
 
 
-
 def value_sort(data: list, value_input: float) -> list:
-
         value_list = [item for item in data if item.value >= value_input]
         for item in value_list:
             print(item)
         print(f"Hittade {len(value_list)} resultat!\n")
         return value_list
+
+
+def status_sort(data: list, status_input: string) -> list:
+    ALLOWED = {"OK", "WARNING", "ERROR"}
+
+    if status_input not in ALLOWED:
+        raise ValueError
+    else:
+        status_list = [item for item in data if item.status == status_input]
+        for item in status_list:
+            print(item)
+        print(f"Hittade {len(status_list)} resultat!\n")
+        return status_list
+
+
 
 def binary_search(data: list, id_input: string) -> list:
     pass
