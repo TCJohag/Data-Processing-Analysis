@@ -7,6 +7,8 @@ import random
 import string
 import time
 from functools import wraps
+from tqdm import tqdm
+
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -17,6 +19,20 @@ def clear_terminal() -> None:
 def pause() -> None:
     print("Tryck valfri tangent och enter för att fortsätta...")
     input()
+    clear_terminal()
+
+
+def progress_bar(total_key="total"):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            total = kwargs.pop(total_key, None)
+            results = []
+            for item in tqdm(func(*args, **kwargs), total=total, desc=func.__name__):
+                results.append(item)
+            return results
+        return wrapper
+    return decorator
 
 
 def exception_handler(func):
@@ -26,14 +42,14 @@ def exception_handler(func):
             return func(*args, **kwargs)
         except ValueError as e:
             clear_terminal()
-            print(f"Det blev visst fel med {func.__name__}. Angav du ett värde likt det som instruerats?")
+            print(f"Det blev visst fel med {func.__name__}. Angav du ett värde likt det som instruerats?\n")
         except NoDataError:
             clear_terminal()
-            print("Det verkar som att det inte finns någon data. Har du genererat någon?")     
+            print("Det verkar som att det inte finns någon data. Har du genererat någon?\n")     
     return wrapper
 
 
-def execution_time(func):
+def execution_timer(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
@@ -44,8 +60,8 @@ def execution_time(func):
             result = list(result)
 
         end_time = time.perf_counter()
-        execution_time = end_time - start_time
-        print(f"{func.__name__} tog {execution_time:.4f} sekunder!")
+        execution_time = (end_time - start_time) * 1000
+        print(f"{func.__name__} tog {execution_time:.4f} millisekunder!")
         return result
     return wrapper
 
@@ -66,17 +82,18 @@ def menu_choice(max_choice):
             if 1 <= menu_input <= max_choice:
                 return menu_input
             else:
-                clear_terminal()
+                #clear_terminal()
                 print(f"Du får endast välja ett alternativ mellan 1 och {max_choice}!\n")
         except ValueError as e:
-            clear_terminal()
+            #clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
 
 
 # Fixa så att loading baren sker med execution time
 @has_it_been_called
-@execution_time
+@execution_timer
+@progress_bar()
 def generate_data() -> Iterator[SensorData]:
     for x in range(1_000_000):
 
@@ -99,25 +116,18 @@ def generate_data() -> Iterator[SensorData]:
         status = random.choice(["OK", "ERROR", "WARNING"])
 
         yield SensorData(device_id, timestamp, value, status)
+    tqdm.write("Generering klar!\n")
 
 
-def generated_data_check():
+
+def id_sort(id_input: str) -> list:
     pass
 
 
 
-    
-# def sort_generated_data(data: list) -> list:
-#     data.sort()
-
-
-def id_sort(data: list) -> list:
-    device_id_list = [device_id for device_id in data if data.device_id in device_id]
-    for device_ids in device_id_list:
-        print(device_ids)
-
-
 @exception_handler
+@execution_timer
+@progress_bar()
 def value_sort(data: list, value_input: str) -> list:
     if data is None:
         raise NoDataError
@@ -131,6 +141,8 @@ def value_sort(data: list, value_input: str) -> list:
 
 
 @exception_handler
+@execution_timer
+@progress_bar()
 def status_sort(data: list, status_input: str) -> list:
     if data is None:
         raise NoDataError
