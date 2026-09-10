@@ -8,7 +8,7 @@ import string
 import time
 from functools import wraps
 from tqdm import tqdm
-
+import re
 
 def clear_terminal() -> None:
     if os.name == 'nt':
@@ -45,7 +45,7 @@ def exception_handler(func):
             print(f"Det blev visst fel med {func.__name__}. Angav du ett värde likt det som instruerats?\n")
         except NoDataError:
             clear_terminal()
-            print("Det verkar som att det inte finns någon data. Har du genererat någon?\n")     
+            print("Det verkar som att det inte finns någon data. Har du genererat någon?\n")    
     return wrapper
 
 
@@ -90,7 +90,6 @@ def menu_choice(max_choice):
 
 
 
-# Fixa så att loading baren sker med execution time
 @has_it_been_called
 @execution_timer
 @progress_bar()
@@ -117,11 +116,6 @@ def generate_data() -> Iterator[SensorData]:
 
         yield SensorData(device_id, timestamp, value, status)
     tqdm.write("Generering klar!\n")
-
-
-
-def id_sort(id_input: str) -> list:
-    pass
 
 
 
@@ -158,12 +152,48 @@ def status_sort(data: list, status_input: str) -> list:
         return status_list
 
 
+@exception_handler
+@execution_timer
+def sort_data(data: list):
+    if data is None:
+        raise NoDataError
 
-def binary_search(data: list, id_input: string) -> list:
-    pass
+    try:
+        sorted_data = sorted(data, key=lambda item: item.device_id)
+        return sorted_data
+    except TypeError as e:
+        print("Har du genererat någon data? Hittar inte någon!")
+        pause()
+        
 
-def device_id_search(data: list, id_input: string) -> list:
-    pass
+@exception_handler
+@execution_timer
+def binary_search(data: list, id_input: str) -> int:
+
+    if data is None:
+        raise NoDataError
+
+    left, right = 0, len(data) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if data[mid].device_id == id_input:
+            return mid
+        elif data[mid].device_id < id_input:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1  
+
+
+@exception_handler
+def device_id_input(prompt: str) -> str:
+    while True:
+        value = input(prompt).upper()
+        if re.fullmatch(r"[A-Z]{3}-\d{4}", value):
+            return value
+        else:
+            print("Antingen finns inte ID:t du söker efter, eller så skriver du fel.\nTre bokstäver, ett bindestreck, fyra siffror! (t.ex ABC-1234)\nFörsök igen!\n")
+            
 
 
 

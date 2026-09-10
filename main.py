@@ -1,4 +1,4 @@
-from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search,status_sort, id_sort
+from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search,status_sort, device_id_input, sort_data
 
 data = None
 
@@ -74,13 +74,20 @@ while True:
                         break
 
         case 3:
-            #Binärsökning, listan måste vara sorterad
-            #Användaren matar in ett device_id, eller tre fasta värden: första i listan, i mitten och ett som inte finns
-            print("Skriv ett device id!\n")
-            id_input = input(".. ")
+            print("Skriv ett device id! (t.ex. ABC-1234)\n")
+            device_id =  device_id_input(".. ").upper()
+            clear_terminal()
 
-            data.sort()
-            binary_search(data, id_input)
+            sorted_data = sort_data(data)
+            if sorted_data is not None:
+                binary_result = binary_search(sorted_data, device_id)
+                if binary_result == -1:
+                    print("Det angivna ID:t hittades inte!\n")
+                else:
+                    found_device = sorted_data[binary_result]
+                    print(f"{binary_result}")
+            pause()
+
 
         case 4:
             #Sortera hela datan baserat på device_id eller value. Quicksort
