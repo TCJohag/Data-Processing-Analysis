@@ -1,4 +1,4 @@
-from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search,status_sort, device_id_input, sort_data
+from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search,status_sort, device_id_input, sort_data, quicksort
 
 data = None
 
@@ -90,8 +90,9 @@ while True:
 
 
         case 4:
-            #Sortera hela datan baserat på device_id eller value. Quicksort
-            pass
+                
+            quicksorted_data = quicksort(data, key=lambda item: item.device_id)
+            
         case 5:
             #Skriver ut en sammanställning av de senast uppmätta tiderna för generering, filtrering, sortering, sökning
             pass

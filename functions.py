@@ -121,7 +121,6 @@ def generate_data() -> Iterator[SensorData]:
 
 @exception_handler
 @execution_timer
-@progress_bar()
 def value_sort(data: list, value_input: str) -> list:
     if data is None:
         raise NoDataError
@@ -136,7 +135,6 @@ def value_sort(data: list, value_input: str) -> list:
 
 @exception_handler
 @execution_timer
-@progress_bar()
 def status_sort(data: list, status_input: str) -> list:
     if data is None:
         raise NoDataError
@@ -186,15 +184,37 @@ def binary_search(data: list, id_input: str) -> int:
 
 
 @exception_handler
-def device_id_input(prompt: str) -> str:
+def device_id_input(id_input: str) -> str:
     while True:
-        value = input(prompt).upper()
+        value = id_input(input).upper()
         if re.fullmatch(r"[A-Z]{3}-\d{4}", value):
             return value
         else:
             print("Antingen finns inte ID:t du söker efter, eller så skriver du fel.\nTre bokstäver, ett bindestreck, fyra siffror! (t.ex ABC-1234)\nFörsök igen!\n")
             
 
+def _quicksort(data: list, key) -> list:
+    if data is None:
+        raise NoDataError
+
+    if len(data) <= 1:
+        return data
+
+    pivot = data[-1]
+    pivot_key = key(pivot)
+
+    smaller = [x for x in data[:-1] if key(x) < pivot_key]
+    bigger = [x for x in data[:-1] if key(x) >= pivot_key]
+
+    return _quicksort(smaller, key) + [pivot] + _quicksort(bigger, key)
+
+
+
+# Denna funktion är till för decoratorerna, så inte dem körs för varje iteration i huvudfunktionen
+@exception_handler
+@execution_timer
+def quicksort(data: list, key=lambda x:x ) -> list:
+    return _quicksort(data, key)
 
 
 
