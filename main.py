@@ -1,3 +1,4 @@
+from functions import timelog
 from functions import menu_choice, clear_terminal, generate_data, pause, value_sort,binary_search,status_sort, device_id_input, sort_data, quicksort
 
 data = None
@@ -75,7 +76,8 @@ while True:
 
         case 3:
             print("Skriv ett device id! (t.ex. ABC-1234)\n")
-            device_id =  device_id_input(".. ").upper()
+
+            device_id = device_id_input(".. ").upper()
             clear_terminal()
 
             sorted_data = sort_data(data)
@@ -92,10 +94,22 @@ while True:
         case 4:
                 
             quicksorted_data = quicksort(data, key=lambda item: item.device_id)
+            pause()
             
         case 5:
-            #Skriver ut en sammanställning av de senast uppmätta tiderna för generering, filtrering, sortering, sökning
-            pass
+            if not timelog:
+                print("Inga funktioner i programmet har körts än.\nTitta förbi när du har provat någon!\n")
+                pause()
+            else:
+                fulltime = 0.0
+                for name, time in timelog:
+                    print(f"{name} tog {time} ms.")
+                    fulltime += time
+    
+                print(f"Den totala tiden för körda funktioner är: {fulltime:.4f}\n")
+                pause()
+                
+                
         case 6:
             break
 

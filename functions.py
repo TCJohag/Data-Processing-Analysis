@@ -49,6 +49,7 @@ def exception_handler(func):
     return wrapper
 
 
+timelog = []
 def execution_timer(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -62,6 +63,7 @@ def execution_timer(func):
         end_time = time.perf_counter()
         execution_time = (end_time - start_time) * 1000
         print(f"{func.__name__} tog {execution_time:.4f} millisekunder!")
+        timelog.append((func.__name__, execution_time))
         return result
     return wrapper
 
@@ -186,7 +188,7 @@ def binary_search(data: list, id_input: str) -> int:
 @exception_handler
 def device_id_input(id_input: str) -> str:
     while True:
-        value = id_input(input).upper()
+        value = input(id_input).upper()
         if re.fullmatch(r"[A-Z]{3}-\d{4}", value):
             return value
         else:
