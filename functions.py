@@ -84,10 +84,8 @@ def menu_choice(max_choice):
             if 1 <= menu_input <= max_choice:
                 return menu_input
             else:
-                #clear_terminal()
                 print(f"Du får endast välja ett alternativ mellan 1 och {max_choice}!\n")
         except ValueError as e:
-            #clear_terminal()
             print("Nu blev det visst fel. Skrev du en siffra?\n")   
 
 
