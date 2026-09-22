@@ -92,7 +92,7 @@ while True:
 
 
         case 4:
-                
+            print("Sorterar data..\n")
             quicksorted_data = quicksort(data, key=lambda item: item.device_id)
             pause()
             
