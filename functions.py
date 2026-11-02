@@ -191,8 +191,8 @@ def device_id_input(id_input: str) -> str:
             return value
         else:
             print("Antingen finns inte ID:t du söker efter, eller så skriver du fel.\nTre bokstäver, ett bindestreck, fyra siffror! (t.ex ABC-1234)\nFörsök igen!\n")
-            
 
+            
 def _quicksort(data: list, key) -> list:
     if data is None:
         raise NoDataError
