@@ -40,7 +40,7 @@ Since there are two numbers left (no midpoint), the function takes the first of 
 
 `5 -> 8 -> 9` in three steps.
 
-It took three steps for binary search, in comparison to nine for linear search. Given the size of the list, the difference isn't that important. The difference could be massive. Linear search has a linear time complexity of O(n), meaning that the number of comparisons increases proportionally to the size of the list. Binary search, on the other hand, has a logarithmic time complexity of O(log n), meaning that the number of comparisons increases much more slowly as the list grows. Every time the list size doubles, binary search only needs approximately one additional comparison.
+It took three steps for binary search, in comparison to nine for linear search. Given the size of the list, the difference isn't that important, though the difference could be massive. Linear search has a linear time complexity of O(n), meaning that the number of comparisons increases proportionally to the size of the list. Binary search, on the other hand, has a logarithmic time complexity of O(log n), meaning that the number of comparisons increases much more slowly as the list grows. Every time the list size doubles, binary search only needs approximately one additional comparison.
 
 This makes binary search significantly more efficient when searching through large datasets. This is, however, only important if the list is continuously searched. If the list only needs to be searched once, the use of binary search might not really be necessary. Something that also needs to be taken into account is that the list needs to be sorted beforehand, which adds to the total time taken.
 
